@@ -1,7 +1,6 @@
 package de.home.mayumi.practice.controller;
 
 import de.home.mayumi.practice.common.ResponseMessage;
-import de.home.mayumi.practice.common.ResultState;
 import de.home.mayumi.practice.domain.CreateResponseMessage;
 import de.home.mayumi.practice.domain.EmployeeData;
 import de.home.mayumi.practice.domain.SearchCriteria;

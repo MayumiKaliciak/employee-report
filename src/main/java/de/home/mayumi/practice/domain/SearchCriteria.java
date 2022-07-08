@@ -9,6 +9,8 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 public class SearchCriteria {
 
+    private String id;
+
     private String textSearch;
     ;
     private Integer ageMin;

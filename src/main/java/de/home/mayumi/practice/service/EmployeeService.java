@@ -54,15 +54,15 @@ public class EmployeeService {
 
     public List<EmployeeData> getEmployees(SearchCriteria searchCriteria) {
 
-        List<EmployeeData> employees;
+        List<EmployeeDocument> employees;
 
         if (searchCriteria == null) {
-            //TODO implement Search
+            employees = repository.findAll();
+        } else {
+            employees = repository.findEmployees(searchCriteria);
         }
-
-        return null;
+        return mapper.mapFromDocToDto(employees);
     }
-
 
     private EmployeeDocument updateDocument(EmployeeDocument document, EmployeeData employeeData) {
         document.setName(employeeData.getName());
