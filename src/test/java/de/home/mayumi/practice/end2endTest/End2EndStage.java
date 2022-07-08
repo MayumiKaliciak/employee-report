@@ -6,12 +6,15 @@ import com.tngtech.jgiven.integration.spring.JGivenStage;
 import de.home.mayumi.practice.common.ResponseMessage;
 import de.home.mayumi.practice.common.ResultState;
 import de.home.mayumi.practice.domain.EmployeeData;
+import de.home.mayumi.practice.domain.SearchCriteria;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.List;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.webAppContextSetup;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -25,6 +28,7 @@ public class End2EndStage {
 
     private EmployeeData employee;
     private String employeesId;
+    private List<EmployeeData> searchedEmployees;
 
     @Autowired
     private WebApplicationContext context;
@@ -100,5 +104,33 @@ public class End2EndStage {
                 .function("Java-Developer")
                 .salary(55000)
                 .build();
+    }
+
+    public End2EndStage an_employee_is_searched_by_text_$_(String nameSearch) {
+
+        SearchCriteria searchCriteria = SearchCriteria.builder()
+                .textSearch(nameSearch)
+                .build();
+
+        MockMvcResponse response = RestAssuredMockMvc.given()
+                .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .header(ACCEPT, APPLICATION_JSON_VALUE)
+                .body(searchCriteria)
+                .get("/employees");
+
+        response.then().statusCode(200);
+
+        this.searchedEmployees = response.body().jsonPath()
+                .getList(".", EmployeeData.class);
+
+        return this;
+    }
+
+    public End2EndStage the_employees_data_object_can_be_found() {
+
+        assertThat(searchedEmployees).isNotNull();
+        assertThat(searchedEmployees.get(0).getName()).isEqualTo("Bernd");
+
+        return this;
     }
 }

@@ -58,7 +58,7 @@ public class EmployeeController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @GetMapping("/employee")
+    @GetMapping("/employees")
     public ResponseEntity<List<EmployeeData>> getEmployees(SearchCriteria searchCriteria) {
 
         List<EmployeeData> employees = employeeService.getEmployees(searchCriteria);
