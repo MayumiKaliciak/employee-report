@@ -4,10 +4,10 @@ import de.home.mayumi.practice.common.ResultState;
 import de.home.mayumi.practice.domain.CreateResponseMessage;
 import de.home.mayumi.practice.domain.EmployeeData;
 import de.home.mayumi.practice.domain.SearchCriteria;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import de.home.mayumi.practice.persistence.EmployeeDocument;
 import de.home.mayumi.practice.persistence.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,29 +33,34 @@ public class EmployeeService {
                 .build();
     }
 
-    public ResultState updateEmployee(String employeeId, EmployeeData employeeData) {
+    public CreateResponseMessage updateEmployee(String employeeId, EmployeeData employeeData) {
 
         Optional<EmployeeDocument> document = repository.findById(employeeId);
 
-        if(document.isEmpty()){
-            return ResultState.NOT_FOUND;
-        } else{
+        if (document.isEmpty()) {
+            return CreateResponseMessage.builder()
+                    .resultState(ResultState.NOT_FOUND)
+                    .build();
+        } else {
             EmployeeDocument employeeDocument = updateDocument(document.get(), employeeData);
             repository.save(employeeDocument);
-            return ResultState.OK;
+            EmployeeData updatedEmployee = mapper.mapToDto(employeeDocument);
+            return CreateResponseMessage.builder()
+                    .employee(updatedEmployee)
+                    .resultState(ResultState.OK)
+                    .build();
         }
     }
 
     public List<EmployeeData> getEmployees(SearchCriteria searchCriteria) {
 
         List<EmployeeData> employees;
-        
-        if(searchCriteria == null){
+
+        if (searchCriteria == null) {
             //TODO implement Search
         }
-        
-        return null;
 
+        return null;
     }
 
 

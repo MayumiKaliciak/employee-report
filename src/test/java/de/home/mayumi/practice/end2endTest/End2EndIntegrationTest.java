@@ -1,4 +1,18 @@
 package de.home.mayumi.practice.end2endTest;
 
-public class EndToEndIntegrationTest {
+import com.tngtech.jgiven.integration.spring.EnableJGiven;
+import com.tngtech.jgiven.integration.spring.junit5.SimpleSpringScenarioTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+@EnableJGiven
+public class End2EndIntegrationTest extends SimpleSpringScenarioTest<End2EndStage> {
+
+    @Test
+    public void New_Employee_Is_Created_And_Can_Be_Updated() {
+        given().an_employeeData_object_is_filled_out_in_frontEnd();
+        when().an_employeesData_object_is_created_in_backEnd();
+        then().an_employeesData_object_can_be_updated();
+    }
 }

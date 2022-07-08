@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository{
+public class EmployeeCustomRepositoryImpl implements EmployeeCustomRepository {
 
     private final MongoTemplate mongoTemplate;
 }

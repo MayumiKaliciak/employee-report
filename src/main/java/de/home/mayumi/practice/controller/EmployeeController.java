@@ -5,12 +5,12 @@ import de.home.mayumi.practice.common.ResultState;
 import de.home.mayumi.practice.domain.CreateResponseMessage;
 import de.home.mayumi.practice.domain.EmployeeData;
 import de.home.mayumi.practice.domain.SearchCriteria;
+import de.home.mayumi.practice.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import de.home.mayumi.practice.service.EmployeeService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,14 +39,24 @@ public class EmployeeController {
     }
 
     @PatchMapping("/employee/{employeeId}")
-    public ResponseEntity<ResultState> updateEmployee(@PathVariable String employeeId, @RequestBody @Valid EmployeeData employeeData) {
+    public ResponseEntity<ResponseMessage<EmployeeData>> updateEmployee(@PathVariable String employeeId, @RequestBody @Valid EmployeeData employeeData) {
 
-        ResultState resultState = employeeService.updateEmployee(employeeId, employeeData);
+        CreateResponseMessage result = employeeService.updateEmployee(employeeId, employeeData);
 
-        if (NOT_FOUND.equals(resultState)) {
+        if (NOT_FOUND.equals(result.getResultState())) {
+
+            ResponseMessage<EmployeeData> message = ResponseMessage.<EmployeeData>builder()
+                    .message("No matching employee has been found")
+                    .build();
+
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().build();
+
+        ResponseMessage<EmployeeData> message = ResponseMessage.<EmployeeData>builder()
+                .message("Created")
+                .data(result.getEmployee())
+                .build();
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @GetMapping("/employee")

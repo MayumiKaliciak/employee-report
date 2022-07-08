@@ -1,8 +1,8 @@
 package de.home.mayumi.practice.service;
 
 import de.home.mayumi.practice.domain.EmployeeData;
-import org.springframework.stereotype.Component;
 import de.home.mayumi.practice.persistence.EmployeeDocument;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ public class EmployeeMapper {
                 .collect(Collectors.toList());
     }
 
-    EmployeeData mapToDto(EmployeeDocument document){
+    EmployeeData mapToDto(EmployeeDocument document) {
         return EmployeeData.builder()
                 .id(document.getId())
                 .name(document.getName())
@@ -27,7 +27,7 @@ public class EmployeeMapper {
                 .build();
     }
 
-    EmployeeDocument mapToDocument(EmployeeData dto){
+    EmployeeDocument mapToDocument(EmployeeData dto) {
         return EmployeeDocument.builder()
                 .name(dto.getName())
                 .age(dto.getAge())

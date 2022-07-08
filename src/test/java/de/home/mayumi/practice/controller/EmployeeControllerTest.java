@@ -78,7 +78,12 @@ class EmployeeControllerTest {
 
         EmployeeData employee = setUpTestEmployee();
 
-        when(service.updateEmployee("123", employee)).thenReturn(ResultState.OK);
+        CreateResponseMessage responseMessage = CreateResponseMessage.builder()
+                .resultState(ResultState.OK)
+                .employee(employee)
+                .build();
+
+        when(service.updateEmployee("123", employee)).thenReturn(responseMessage);
 
         MockMvcResponse response = RestAssuredMockMvc.given()
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
@@ -96,7 +101,11 @@ class EmployeeControllerTest {
 
         EmployeeData employee = setUpTestEmployee();
 
-        when(service.updateEmployee("456", employee)).thenReturn(ResultState.NOT_FOUND);
+        CreateResponseMessage responseMessage = CreateResponseMessage.builder()
+                .resultState(ResultState.NOT_FOUND)
+                .build();
+
+        when(service.updateEmployee("456", employee)).thenReturn(responseMessage);
 
         MockMvcResponse response = RestAssuredMockMvc.given()
                 .header(CONTENT_TYPE, APPLICATION_JSON_VALUE)
