@@ -21,25 +21,25 @@ import java.time.LocalDateTime;
 public class EmployeeDocument {
 
     @Id
-    String id;
+    private String id;
 
     @Indexed
     @NotEmpty
-    String name;
+    private String name;
 
     @NotNull
-    Integer age;
+    private Integer age;
 
     @Indexed(unique = true)
     @Email
-    String email;
+    private String email;
 
-    String function;
-    Integer salary;
+    private String function;
+    private Integer salary;
 
     @CreatedDate
-    LocalDateTime timeOfRegistration;
+    private LocalDateTime timeOfRegistration;
 
     @LastModifiedDate
-    LocalDateTime lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 }

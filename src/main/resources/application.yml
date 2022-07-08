@@ -1,0 +1,2 @@
+spring.profiles: integration
+# use local or embedded mongodb at localhost:27017

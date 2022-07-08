@@ -9,21 +9,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import service.EmployeeService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static common.ResultState.NOT_FOUND;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
+@Validated
 public class EmployeeController {
 
-    EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @PostMapping("/employee")
-    public ResponseEntity<ResponseMessage<EmployeeData>> createEmployee(@RequestBody EmployeeData employeeData) {
+    public ResponseEntity<ResponseMessage<EmployeeData>> createEmployee(@RequestBody @Valid EmployeeData employeeData) {
 
         CreateResponseMessage result = employeeService.createNewEmployee(employeeData);
 
@@ -37,7 +40,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/employee/{employeeId}")
-    public ResponseEntity<ResultState> updateEmployee(@PathVariable String employeeId, @RequestBody EmployeeData employeeData) {
+    public ResponseEntity<ResultState> updateEmployee(@PathVariable String employeeId, @RequestBody @Valid EmployeeData employeeData) {
 
         ResultState resultState = employeeService.updateEmployee(employeeId, employeeData);
 

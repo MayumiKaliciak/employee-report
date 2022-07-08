@@ -11,10 +11,10 @@ import org.springframework.data.annotation.Id;
 @Builder
 public class EmployeeData {
 
-    String id;
-    String name;
-    Integer age;
-    String email;
-    String function;
-    Integer salary;
+    private String id;
+    private String name;
+    private Integer age;
+    private String email;
+    private String function;
+    private Integer salary;
 }

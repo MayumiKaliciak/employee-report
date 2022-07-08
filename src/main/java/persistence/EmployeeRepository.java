@@ -1,11 +1,8 @@
 package persistence;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
+public interface EmployeeRepository extends MongoRepository<EmployeeDocument, String>, EmployeeCustomRepository {
 
-public interface EmployeeRepository extends CrudRepository<EmployeeDocument, String> {
-
-    //TODO PagingAndSortingRepository
 
 }

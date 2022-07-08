@@ -17,8 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EmployeeService {
 
-    EmployeeRepository repository;
-    EmployeeMapper mapper;
+    private final EmployeeRepository repository;
+    private final EmployeeMapper mapper;
 
     public CreateResponseMessage createNewEmployee(EmployeeData employeeData) {
 
