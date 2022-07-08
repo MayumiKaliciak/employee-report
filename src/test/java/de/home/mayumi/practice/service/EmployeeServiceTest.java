@@ -3,6 +3,7 @@ package de.home.mayumi.practice.service;
 import de.home.mayumi.practice.common.ResultState;
 import de.home.mayumi.practice.domain.CreateResponseMessage;
 import de.home.mayumi.practice.domain.EmployeeData;
+import de.home.mayumi.practice.domain.SearchCriteria;
 import de.home.mayumi.practice.persistence.EmployeeDocument;
 import de.home.mayumi.practice.persistence.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import javax.xml.transform.OutputKeys;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -80,6 +82,55 @@ class EmployeeServiceTest {
 
         assertThat(response).isNotNull();
         assertThat(response.getResultState()).isEqualTo(ResultState.NOT_FOUND);
+    }
+
+    @Test
+    void getEmployeesEmptySearch(){
+
+        EmployeeData employee = setUpTestEmployee();
+        List<EmployeeData> employeeDataList = List.of(employee);
+
+        EmployeeDocument emplDoc = setUpTestEmployeeDocument();
+        List<EmployeeDocument> employeesDocs = List.of(emplDoc);
+
+        when(repository.findAll()).thenReturn(employeesDocs);
+        when(mapper.mapFromDocToDto(employeesDocs)).thenReturn(employeeDataList);
+
+        List<EmployeeData> employees = service.getEmployees(null);
+
+        InOrder inOrder = inOrder(repository, mapper);
+        inOrder.verify(repository).findAll();
+        inOrder.verify(mapper).mapFromDocToDto(employeesDocs);
+
+        assertThat(employees).isNotNull();
+        assertThat(employees.get(0).getId()).isEqualTo(employeeDataList.get(0).getId());
+
+    }
+
+    @Test
+    void getEmployeesMinAgeSearch(){
+
+        EmployeeData employee = setUpTestEmployee();
+        List<EmployeeData> employeeDataList = List.of(employee);
+
+        EmployeeDocument emplDoc = setUpTestEmployeeDocument();
+        List<EmployeeDocument> employeesDocs = List.of(emplDoc);
+
+        SearchCriteria searchCriteria = SearchCriteria.builder()
+                .ageMin(20)
+                .build();
+
+        when(repository.findEmployees(searchCriteria)).thenReturn(employeesDocs);
+        when(mapper.mapFromDocToDto(employeesDocs)).thenReturn(employeeDataList);
+
+        List<EmployeeData> employees = service.getEmployees(searchCriteria);
+
+        InOrder inOrder = inOrder(repository, mapper);
+        inOrder.verify(repository).findEmployees(searchCriteria);
+        inOrder.verify(mapper).mapFromDocToDto(employeesDocs);
+
+        assertThat(employees).isNotNull();
+        assertThat(employees.get(0).getId()).isEqualTo(employeeDataList.get(0).getId());
     }
 
     private EmployeeData setUpTestEmployee() {
