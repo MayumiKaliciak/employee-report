@@ -27,6 +27,7 @@ public class EmployeeDocument {
     @NotEmpty
     private String name;
 
+    @Indexed
     @NotNull
     private Integer age;
 
@@ -35,7 +36,9 @@ public class EmployeeDocument {
     @NotEmpty
     private String email;
 
+    @Indexed
     private String function;
+
     private Integer salary;
 
     @CreatedDate
